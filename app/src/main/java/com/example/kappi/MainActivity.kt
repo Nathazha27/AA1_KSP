@@ -8,8 +8,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.kappi.models.State
+import com.example.kappi.models.User
+import com.example.kappi.screens.DetailScreen
+import com.example.kappi.screens.HomeScreen
+import com.example.kappi.screens.LoginScreen
+import com.example.kappi.screens.Screen
 import com.example.kappi.ui.theme.KappiTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +41,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun KappiApp(name: String, modifier: Modifier = Modifier) {
+    var appState by remember {mutableStateOf(State(R.drawable.ph_ongreen, R.drawable.ph_offyellow,
+        R.drawable.ph_offred))}
+    var actualUser by remember {mutableStateOf(User(R.drawable.pic, "Nathazha", "Token"))}
+    var actualScreen = remember {mutableStateOf<Screen>(HomeScreen())}
 
+    when (val screen = actualScreen.value) {
+        is HomeScreen -> screen.Renderer(actualUser, appState)
+        is LoginScreen -> screen.Renderer()
+        is DetailScreen -> screen.Renderer()
+    }
 }
 
 @Preview(showBackground = true)
