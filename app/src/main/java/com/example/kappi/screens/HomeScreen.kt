@@ -7,19 +7,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.kappi.R
 import com.example.kappi.components.TopBar
-import com.example.kappi.models.State
+import com.example.kappi.models.StateEnum
+import com.example.kappi.models.StateImg
 import com.example.kappi.models.User
 
 class HomeScreen: Screen(R.string.HomeScreen) {
     @Composable
-    public fun Renderer(user: User, state: State){
+    public fun Renderer(user: User, state: StateEnum, LoginScreen: () -> Unit){
         val topBar = TopBar()
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            topBar.TopBarRenderer(user = user, screen = this@HomeScreen, state = state)
+            topBar.TopBarRenderer(user, this@HomeScreen, state, LoginScreen)
         }
     }
 }

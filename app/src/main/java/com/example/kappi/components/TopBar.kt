@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,38 +23,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.kappi.models.State
+import com.example.kappi.models.StateEnum
+import com.example.kappi.models.StateImg
 import com.example.kappi.models.User
 import com.example.kappi.screens.Screen
 
 class TopBar {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    public fun TopBarRenderer(user: User, screen: Screen, state: State){
+    public fun TopBarRenderer(user: User, screen: Screen, state: StateEnum, LoginScreen: () -> Unit){
         val userProfile = UserPic()
         val appState = ConnectionState()
-        Box(
-            modifier = Modifier
-                .background(Color(0xFF4a455e))
-                .padding(
-                    WindowInsets.statusBars.asPaddingValues()
-                )
-        ){
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                userProfile.UserPicRenderer(user = user)
-                Spacer(modifier = Modifier.weight(0.5f))
+        TopAppBar(
+            colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Color(0xFF4a455e),
+            titleContentColor = Color.White
+            ),
+            title = {
                 Text(
                     text = stringResource(id = screen.screenName),
                     textAlign = TextAlign.Center,
-                    fontSize = 45.sp,
-                    color = Color.White
+                    fontSize = 40.sp,
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                appState.ConnectionStateRenderer(state = state)
+            },
+            navigationIcon = {
+                userProfile.UserPicRenderer(user, LoginScreen)
+            },
+            actions = {
+                appState.ConnectionStateRenderer(state)
             }
-        }
+        )
     }
 }
