@@ -39,7 +39,7 @@ class MenuBar {
                   onClick = homeScreen
               ) {
                   Image(
-                      painter = painterResource(R.drawable.ph_offgreen),
+                      painter = painterResource(R.drawable.baseline_home_24),
                       contentDescription = null,
                       modifier = Modifier.size(50.dp).clip(CircleShape)
                   )
@@ -48,7 +48,7 @@ class MenuBar {
                   onClick = detailScreen
               ) {
                   Image(
-                      painter = painterResource(R.drawable.ph_offgreen),
+                      painter = painterResource(R.drawable.baseline_calculate_24),
                       contentDescription = null,
                       modifier = Modifier.size(50.dp).clip(CircleShape)
                   )
@@ -57,7 +57,7 @@ class MenuBar {
                   onClick = detailScreen
               ) {
                   Image(
-                      painter = painterResource(R.drawable.ph_offgreen),
+                      painter = painterResource(R.drawable.baseline_speed_24),
                       contentDescription = null,
                       modifier = Modifier.size(50.dp).clip(CircleShape)
                   )
@@ -66,7 +66,7 @@ class MenuBar {
                   onClick = detailScreen
               ) {
                   Image(
-                      painter = painterResource(R.drawable.ph_offgreen),
+                      painter = painterResource(R.drawable.baseline_menu_book_24),
                       contentDescription = null,
                       modifier = Modifier.size(50.dp).clip(CircleShape)
                   )
@@ -75,7 +75,7 @@ class MenuBar {
                   onClick = detailScreen
               ) {
                   Image(
-                      painter = painterResource(R.drawable.ph_offgreen),
+                      painter = painterResource(R.drawable.ckan),
                       contentDescription = null,
                       modifier = Modifier.size(50.dp).clip(CircleShape)
                   )
@@ -84,7 +84,7 @@ class MenuBar {
                   onClick = detailScreen
               ) {
                   Image(
-                      painter = painterResource(R.drawable.ph_offgreen),
+                      painter = painterResource(R.drawable.baseline_settings_24),
                       contentDescription = null,
                       modifier = Modifier.size(50.dp).clip(CircleShape)
                   )

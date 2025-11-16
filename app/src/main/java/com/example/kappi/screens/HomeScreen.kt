@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -131,17 +132,28 @@ class HomeScreen: Screen(R.string.HomeScreen) {
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
-                        lineHeight = 0.sp
+                        lineHeight = 0.sp,
+                        color = Color.White
                     )
                 }
             }
             item { Spacer(modifier = Modifier.padding(10.dp)) }
             item{HomeInfo()}
             item { Spacer(modifier = Modifier.padding(10.dp)) }
+            item {
+                Image(
+                    painter = painterResource(id = R.drawable.kerbaldivider),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(800.dp)
+                        .scale(1.4f),
+                    contentScale = ContentScale.Fit
+                )}
+            item { Spacer(modifier = Modifier.padding(10.dp)) }
             items(detailHome){
                 detail -> HomeDetailComp().RenderHomeComp(detail)
             }
-            item { Spacer(modifier = Modifier.padding(80.dp)) }
+            item { Spacer(modifier = Modifier.padding(0.dp)) }
         }
     }
 
