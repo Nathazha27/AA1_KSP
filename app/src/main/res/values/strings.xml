@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">kappi</string>
-    <string name="DetailScreen">DetailScreen(tmp)</string>
+    <string name="DetailScreen">DETAIL</string>
     <string name="HomeScreen">HOME</string>
     <string name="LoginScreen">LOGIN</string>
+    <string name="LoginText1">Get your personal token to acces in realtime telemetry</string>
+    <string name="LoginText2">Follow this guide to setup the KAPPI desktop app enviroment in your PC</string>
+    <string name="LoginMessage1">Log in or sign up in seconds</string>
+    <string name="LoginMessage2">Use your personal token and credentials to continue with kappi</string>
+    <string name="LoginUsername">Username*</string>
+    <string name="LoginPassword">Password*</string>
+    <string name="LoginConnection">Connection Token</string>
+    <string name="LoginButton">Login</string>
+    <string name="HomeText1">Welcome</string>
+    <string name="HomeText2">Is this your first time?</string>
+    <string name="HomeText3">you can log in to connect to the KSP Kappi Client</string>
+    <string name="HomeLogin">Log In</string>
+    <string name="HomeInfo1">About KAPPI</string>
+    <string name="HomeInfo2">Kerbal Space Program Application Interface, abbreviated Kappi, is a Project that allows you to connect your KSP-Running Machine to your Smartphone to provide data about the game.</string>
+    <string name="HomeInfo3">Calculator</string>
+    <string name="HomeInfo4">Kappo has a built-in calculator capanility, allowing you to calculate orbital insertions. Hoffman encounters and much more... all without leaving the app.</string>
 </resources>

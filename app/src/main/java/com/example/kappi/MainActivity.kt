@@ -42,13 +42,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun KappiApp(name: String, modifier: Modifier = Modifier) {
     var appState by remember {mutableStateOf(StateEnum.OFF)}
-    var actualUser by remember {mutableStateOf(User(R.drawable.pic, "Nathazha", "Token"))}
+    var actualUser by remember {mutableStateOf(User(R.drawable.pic, mutableStateOf("Nathazha"), mutableStateOf(""),mutableStateOf("Token")))}
     var actualScreen = remember {mutableStateOf<Screen>(HomeScreen())}
 
     when (val screen = actualScreen.value) {
-        is HomeScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()})
-        is LoginScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()})
-        is DetailScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()})
+        is HomeScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen()})
+        is LoginScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen()})
+        is DetailScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen()})
         else -> Unit
     }
 }
