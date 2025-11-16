@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kappi.R
 import com.example.kappi.models.HomeDataDetail
+import com.example.kappi.ui.theme.LatoFontFamily
+import com.example.kappi.ui.theme.PixelifyFontFamily
 
 class HomeDetailComp {
     @Composable
@@ -51,17 +53,19 @@ class HomeDetailComp {
                 Text(
                     text = stringResource(homeDetail.title),
                     textAlign = TextAlign.Left,
+                    fontFamily = LatoFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 32.sp,
-                    color = Color.White
+                    color = Color(0xFFEDEDED)
                 )
                 NeonDivider().Render()
                 Text(
                     text = stringResource(homeDetail.info),
                     textAlign = TextAlign.Left,
+                    fontFamily = PixelifyFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
-                    color = Color.White
+                    color = Color(0xFFEDEDED)
                 )
             }
         }

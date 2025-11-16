@@ -19,4 +19,10 @@
     <string name="HomeInfo2">Kerbal Space Program Application Interface, abbreviated Kappi, is a Project that allows you to connect your KSP-Running Machine to your Smartphone to provide data about the game.</string>
     <string name="HomeInfo3">Calculator</string>
     <string name="HomeInfo4">Kappi has a built-in calculator capanility, allowing you to calculate orbital insertions. Hoffman encounters and much more... all without leaving the app.</string>
+    <string name="HomeInfo5">Telemetry display</string>
+    <string name="HomeInfo6">Experience real-time mission insights with our advanced KSP telemetry dashboard. Monitor spacecraft performance, orbital data, and critical systems as they unfold in-game. Stay in command with live metrics designed to enhance every stage of your Kerbal Space Program adventure.</string>
+    <string name="HomeInfo7">Tutorial Hub</string>
+    <string name="HomeInfo8">Access a curated library of step-by-step KSP tutorials designed to guide you from beginner to expert. Learn essential techniques, master advanced maneuvers, and explore at your own pace. Our tutorial hub makes every mission simpler, clearer, and more enjoyable.</string>
+    <string name="HomeInfo9">CKAN interface</string>
+    <string name="HomeInfo10">Connect seamlessly with CKAN to manage your KSP mods visually right from your phone. Browse, enable, disable, and organize your mods with a clean and intuitive interface. Take full control of your modded experience anytime, anywhere.</string>
 </resources>
