@@ -26,7 +26,7 @@ import com.example.kappi.models.StateEnum
 class MenuBar {
     //Menú lateral izquierdo con botón que lo desplazará de fuera a dentro y de dentro a fuera
     @Composable
-    public fun MenuBarRenderer(homeScreen: () -> Unit, detailScreen: () -> Unit){ //Renderer del menú lateral
+    public fun MenuBarRenderer(homeScreen: () -> Unit, detailScreen: () -> Unit, calculatorScreen: () -> Unit){ //Renderer del menú lateral
         Box(
             modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(Color(0xFF24222D)).width(52.dp).padding(vertical = 20.dp),
             contentAlignment = Alignment.Center
@@ -45,7 +45,7 @@ class MenuBar {
                   )
               }
               IconButton(
-                  onClick = detailScreen
+                  onClick = calculatorScreen
               ) {
                   Image(
                       painter = painterResource(R.drawable.baseline_calculate_24),

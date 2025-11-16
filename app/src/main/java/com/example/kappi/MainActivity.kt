@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
+import com.example.kappi.screens.CalculateScreen
 import com.example.kappi.screens.DetailScreen
 import com.example.kappi.screens.HomeScreen
 import com.example.kappi.screens.LoginScreen
@@ -47,9 +48,10 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
     var actualScreen = remember {mutableStateOf<Screen>(HomeScreen())}
 
     when (val screen = actualScreen.value) {
-        is HomeScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen()})
-        is LoginScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen()})
-        is DetailScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen()})
+        is HomeScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
+        is LoginScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
+        is DetailScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
+        is CalculateScreen -> screen.CalculatorRenderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
         else -> Unit
     }
 }

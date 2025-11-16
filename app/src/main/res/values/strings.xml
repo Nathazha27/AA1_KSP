@@ -3,7 +3,7 @@
     <string name="DetailScreen">DETAIL</string>
     <string name="HomeScreen">HOME</string>
     <string name="LoginScreen">LOGIN</string>
-    <string name="LoginText1">Get your personal token to acces in realtime telemetry</string>
+    <string name="LoginText1">Get your personal token to access in realtime telemetry</string>
     <string name="LoginText2">Follow this guide to setup the KAPPI desktop app enviroment in your PC</string>
     <string name="LoginMessage1">Log in or sign up in seconds</string>
     <string name="LoginMessage2">Use your personal token and credentials to continue with kappi</string>
@@ -25,4 +25,6 @@
     <string name="HomeInfo8">Access a curated library of step-by-step KSP tutorials designed to guide you from beginner to expert. Learn essential techniques, master advanced maneuvers, and explore at your own pace. Our tutorial hub makes every mission simpler, clearer, and more enjoyable.</string>
     <string name="HomeInfo9">CKAN interface</string>
     <string name="HomeInfo10">Connect seamlessly with CKAN to manage your KSP mods visually right from your phone. Browse, enable, disable, and organize your mods with a clean and intuitive interface. Take full control of your modded experience anytime, anywhere.</string>
+    <string name="CalculatorScreen">CALCULATOR</string>
+    <string name="CalculatorText1">ΔV Calculator</string>
 </resources>

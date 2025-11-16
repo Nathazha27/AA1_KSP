@@ -11,15 +11,15 @@ import com.example.kappi.components.TopBar
 import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 
-class DetailScreen: Screen(R.string.DetailScreen) {
+open class DetailScreen(detailName:Int): Screen(detailName) {
     @Composable
-    public fun Renderer(user: User, state: StateEnum, LoginScreen: () -> Unit, homeScreen: () -> Unit, detailScreen: () -> Unit){
+    public fun Renderer(user: User, state: StateEnum, LoginScreen: () -> Unit, homeScreen: () -> Unit, detailScreen: () -> Unit, calculatorScreen: () -> Unit){
         val topBar = TopBar()
         val menuBar = MenuBar()
         Column()
         {
             topBar.TopBarRenderer(user, this@DetailScreen, state, LoginScreen)
-            menuBar.MenuBarRenderer(homeScreen, detailScreen)
+            menuBar.MenuBarRenderer(homeScreen, detailScreen, calculatorScreen)
         }
     }
 }
