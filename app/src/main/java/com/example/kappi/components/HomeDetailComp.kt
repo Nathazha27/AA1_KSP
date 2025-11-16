@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,6 +32,13 @@ class HomeDetailComp {
     public fun RenderHomeComp(homeDetail: HomeDataDetail){
         Box(
             modifier = Modifier
+                .shadow(
+                    6.dp,
+                    RoundedCornerShape(20.dp),
+                    false,
+                    Color(0xFFEA00FF),
+                    Color(0xFFEA00FF)
+                )
                 .clip(RoundedCornerShape(20.dp))
                 .border(2.dp, Color(0xFF90709D), RoundedCornerShape(20.dp))
                 .clickable { homeDetail.onClick() }
@@ -39,7 +47,7 @@ class HomeDetailComp {
                 .width(300.dp),
             contentAlignment = Alignment.Center
         ){
-            Column(){
+            Column {
                 Text(
                     text = stringResource(homeDetail.title),
                     textAlign = TextAlign.Left,
@@ -47,7 +55,7 @@ class HomeDetailComp {
                     fontSize = 32.sp,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.padding(10.dp))
+                NeonDivider().Render()
                 Text(
                     text = stringResource(homeDetail.info),
                     textAlign = TextAlign.Left,

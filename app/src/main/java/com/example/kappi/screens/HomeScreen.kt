@@ -97,7 +97,7 @@ class HomeScreen: Screen(R.string.HomeScreen) {
                     color = Color.White
                 )
             }
-            item { Spacer(modifier = Modifier.padding(5.dp)) }
+            item { Spacer(modifier = Modifier.padding(10.dp)) }
             item {
                 Button(
                     onClick = LoginScreen,
@@ -111,17 +111,9 @@ class HomeScreen: Screen(R.string.HomeScreen) {
                     )
                 }
             }
-            item { Spacer(modifier = Modifier.padding(5.dp)) }
+            item { Spacer(modifier = Modifier.padding(10.dp)) }
             item{HomeInfo()}
-            item { Spacer(modifier = Modifier.padding(5.dp)) }
-            item{
-                Image(
-                painter = painterResource(R.drawable.pic),
-                contentDescription = null,
-                modifier = Modifier.size(100.dp)
-                )
-            }
-            item { Spacer(modifier = Modifier.padding(5.dp)) }
+            item { Spacer(modifier = Modifier.padding(10.dp)) }
             items(detailHome){
                 detail -> HomeDetailComp().RenderHomeComp(detail)
             }
