@@ -8,22 +8,29 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +41,7 @@ import com.example.kappi.R
 import com.example.kappi.classes.HomeDetailLoader
 import com.example.kappi.components.HomeDetailComp
 import com.example.kappi.components.MenuBar
+import com.example.kappi.components.NeonDivider
 import com.example.kappi.components.TopBar
 import com.example.kappi.models.HomeDataDetail
 import com.example.kappi.models.StateEnum
@@ -125,6 +133,13 @@ class HomeScreen: Screen(R.string.HomeScreen) {
     fun HomeInfo(){
         Box(
             modifier = Modifier
+                .shadow(
+                    6.dp,
+                    RoundedCornerShape(20.dp),
+                    false,
+                    Color(0xFFEA00FF),
+                    Color(0xFFEA00FF)
+                )
                 .clip(RoundedCornerShape(20.dp))
                 .border(2.dp, Color(0xFF90709D), RoundedCornerShape(20.dp))
                 .background(Color(0xFF1E1C24))
@@ -140,7 +155,7 @@ class HomeScreen: Screen(R.string.HomeScreen) {
                     fontSize = 32.sp,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.padding(10.dp))
+                NeonDivider().Render()
                 Text(
                     text = stringResource(R.string.HomeInfo2),
                     textAlign = TextAlign.Left,
@@ -148,11 +163,14 @@ class HomeScreen: Screen(R.string.HomeScreen) {
                     fontSize = 15.sp,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.padding(10.dp))
+                NeonDivider().Render()
                 Image(
-                    painter = painterResource(R.drawable.pic),
+                    painter = painterResource(R.drawable.diagramkappi),
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp)
+                    modifier = Modifier
+                        .width(400.dp)
+                        .aspectRatio(2.0f),
+                    contentScale = ContentScale.Fit
                 )
             }
         }
