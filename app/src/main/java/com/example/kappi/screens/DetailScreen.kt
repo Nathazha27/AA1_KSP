@@ -12,14 +12,4 @@ import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 
 open class DetailScreen(detailName:Int): Screen(detailName) {
-    @Composable
-    public fun Renderer(user: User, state: StateEnum, LoginScreen: () -> Unit, homeScreen: () -> Unit, detailScreen: () -> Unit, calculatorScreen: () -> Unit){
-        val topBar = TopBar()
-        val menuBar = MenuBar()
-        Column()
-        {
-            topBar.TopBarRenderer(user, this@DetailScreen, state, LoginScreen)
-            menuBar.MenuBarRenderer(homeScreen, detailScreen, calculatorScreen)
-        }
-    }
 }

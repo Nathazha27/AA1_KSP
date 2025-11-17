@@ -43,15 +43,8 @@ import com.example.kappi.ui.theme.PixelifyFontFamily
 
 class CalculateScreen : DetailScreen(R.string.CalculatorScreen) {
     @Composable
-    public fun CalculatorRenderer(user: User, state: StateEnum, LoginScreen: () -> Unit, homeScreen: () -> Unit, detailScreen: () -> Unit, calculatorScreen: () -> Unit){
-        val topBar = TopBar()
-        val menuBar = MenuBar()
+    public fun CalculatorRenderer(){
         CalculatorComp()
-        Column()
-        {
-            topBar.TopBarRenderer(user, this@CalculateScreen, state, LoginScreen)
-            menuBar.MenuBarRenderer(homeScreen, detailScreen, calculatorScreen)
-        }
     }
 
     @Composable

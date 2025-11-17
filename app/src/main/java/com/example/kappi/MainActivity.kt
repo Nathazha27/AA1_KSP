@@ -15,6 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.kappi.components.AppBars
+import com.example.kappi.components.MenuBar
+import com.example.kappi.components.TopBar
 import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 import com.example.kappi.screens.CalculateScreen
@@ -46,12 +49,65 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
     var appState by remember {mutableStateOf(StateEnum.OFF)}
     var actualUser by remember {mutableStateOf(User(R.drawable.pic, mutableStateOf("Nathazha"), mutableStateOf(""),mutableStateOf("Token")))}
     var actualScreen = remember {mutableStateOf<Screen>(HomeScreen())}
+    val topBar = TopBar()
+    val menuBar = MenuBar()
+    val appBars = AppBars()
 
     when (val screen = actualScreen.value) {
-        is HomeScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
-        is LoginScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
-        is DetailScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
-        is CalculateScreen -> screen.CalculatorRenderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
+        is HomeScreen -> {
+            screen.Renderer(
+                { actualScreen.value = LoginScreen() },
+                { actualScreen.value = DetailScreen(R.string.DetailScreen) },
+                { actualScreen.value = CalculateScreen()})
+            appBars.AppBarsRender(
+                actualUser,
+                actualScreen.value,
+                topBar,
+                menuBar,
+                appState,
+                { actualScreen.value = LoginScreen() },
+                { actualScreen.value = HomeScreen() },
+                { actualScreen.value = DetailScreen(R.string.DetailScreen) },
+                { actualScreen.value = CalculateScreen() })
+        }
+        is LoginScreen -> {
+            screen.Renderer(actualUser)
+            appBars.AppBarsRender(
+                actualUser,
+                actualScreen.value,
+                topBar,
+                menuBar,
+                appState,
+                { actualScreen.value = LoginScreen() },
+                { actualScreen.value = HomeScreen() },
+                { actualScreen.value = DetailScreen(R.string.DetailScreen) },
+                { actualScreen.value = CalculateScreen() })
+        }
+        is DetailScreen -> {
+            appBars.AppBarsRender(
+                actualUser,
+                actualScreen.value,
+                topBar,
+                menuBar,
+                appState,
+                {actualScreen.value = LoginScreen()},
+                {actualScreen.value = HomeScreen()},
+                {actualScreen.value = DetailScreen(R.string.DetailScreen)},
+                {actualScreen.value = CalculateScreen()})
+        }
+        is CalculateScreen -> {
+            screen.CalculatorRenderer()
+            appBars.AppBarsRender(
+                actualUser,
+                actualScreen.value,
+                topBar,
+                menuBar,
+                appState,
+                { actualScreen.value = LoginScreen() },
+                { actualScreen.value = HomeScreen() },
+                { actualScreen.value = DetailScreen(R.string.DetailScreen) },
+                { actualScreen.value = CalculateScreen() })
+        }
         else -> Unit
     }
 }
