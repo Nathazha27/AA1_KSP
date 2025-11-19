@@ -57,8 +57,13 @@ import com.example.kappi.ui.theme.PixelifyFontFamily
 
 class HomeScreen: Screen(R.string.HomeScreen) {
     @Composable
-    public fun Renderer(LoginScreen: () -> Unit, detailScreen: () -> Unit, calculatorScreen: () -> Unit){
-        val detailHome = HomeDetailLoader().LoadHomeDetails(detailScreen, calculatorScreen)
+    public fun Renderer(LoginScreen: () -> Unit,
+                        detailScreen: () -> Unit,
+                        calculatorScreen: () -> Unit,
+                        telemetryScreen: () -> Unit,
+                        tutorialhubScreen: () -> Unit,
+                        ckanScreen: () -> Unit){
+        val detailHome = HomeDetailLoader().LoadHomeDetails(detailScreen, calculatorScreen,telemetryScreen,tutorialhubScreen,ckanScreen)
         HomeContent(LoginScreen, detailHome)
     }
 

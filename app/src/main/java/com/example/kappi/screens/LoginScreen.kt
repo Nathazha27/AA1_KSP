@@ -104,7 +104,7 @@ class LoginScreen: Screen(R.string.LoginScreen) {
                         ),
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier
-                            .width(150.dp)
+                            .width(200.dp)
                             .background(
                                 brush = Brush.linearGradient(colors = listOf(Color(0xFF514B6F), Color(0xFF3D2C45))),
                                 shape = RoundedCornerShape(10.dp)
@@ -116,12 +116,12 @@ class LoginScreen: Screen(R.string.LoginScreen) {
                             text = stringResource(R.string.HomeLogin),
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp,
+                            fontSize = 25.sp,
                             lineHeight = 0.sp,
                             color = Color.White
                         )
                     }
-                    Spacer(modifier = Modifier.padding(30.dp))
+                    Spacer(modifier = Modifier.padding(15.dp))
                     IconButton(
                         onClick = {}
                     ){
@@ -129,7 +129,7 @@ class LoginScreen: Screen(R.string.LoginScreen) {
                             painter = painterResource(R.drawable.ph_onyellow),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(50.dp)
+                                .size(100.dp)
                                 .clip(CircleShape)
                         )
                     }

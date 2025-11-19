@@ -27,4 +27,7 @@
     <string name="HomeInfo10">Connect seamlessly with CKAN to manage your KSP mods visually right from your phone. Browse, enable, disable, and organize your mods with a clean and intuitive interface. Take full control of your modded experience anytime, anywhere.</string>
     <string name="CalculatorScreen">CALCULATOR</string>
     <string name="CalculatorText1">ΔV Calculator</string>
+    <string name="TelemetryScreen">TELEMETRY</string>
+    <string name="TutorialHubScreen">TUTORIAL HUB</string>
+    <string name="CKANScreen">CKAN INTERFACE</string>
 </resources>

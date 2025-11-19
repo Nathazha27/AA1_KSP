@@ -49,7 +49,7 @@ class TopBar {
                     textAlign = TextAlign.Center,
                     fontFamily = LatoFontFamily,
                     color = Color(0xFFEDEDED),
-                    fontSize = 40.sp,
+                    fontSize = 35.sp,
                     modifier = Modifier.fillMaxWidth()
                 )
             },

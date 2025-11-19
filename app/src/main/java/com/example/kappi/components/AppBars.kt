@@ -8,11 +8,24 @@ import com.example.kappi.screens.Screen
 
 class AppBars {
     @Composable
-    public fun AppBarsRender(user: User, screen: Screen, topBar: TopBar, menuBar: MenuBar, state: StateEnum, LoginScreen: () -> Unit, homeScreen: () -> Unit, detailScreen: () -> Unit, calculatorScreen: () -> Unit){
+    public fun AppBarsRender(
+        user: User,
+        screen: Screen,
+        topBar: TopBar,
+        menuBar: MenuBar,
+        state: StateEnum,
+        LoginScreen: () -> Unit,
+        homeScreen: () -> Unit,
+        detailScreen: () -> Unit,
+        calculatorScreen: () -> Unit,
+        telemetryScreen: () -> Unit,
+        tutorialhubScreen: () -> Unit,
+        ckanScreen: () -> Unit
+    ){
         Column()
         {
             topBar.TopBarRenderer(user, screen, state, LoginScreen)
-            menuBar.MenuBarRenderer(homeScreen, detailScreen, calculatorScreen)
+            menuBar.MenuBarRenderer(homeScreen, detailScreen, calculatorScreen,telemetryScreen,tutorialhubScreen,ckanScreen)
         }
     }
 }

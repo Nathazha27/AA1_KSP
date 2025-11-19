@@ -46,14 +46,12 @@ class CalculateScreen : DetailScreen(R.string.CalculatorScreen) {
     public fun CalculatorRenderer(){
         CalculatorComp()
     }
-
     @Composable
     fun CalculatorComp() {
         val num1 = remember { mutableStateOf("") }
         val num2 = remember { mutableStateOf("") }
         val num3 = remember { mutableStateOf("") }
         val num4 = remember { mutableStateOf("") }
-
         Box(
             modifier = Modifier
                 .width(300.dp)

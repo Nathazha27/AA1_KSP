@@ -20,11 +20,14 @@ import com.example.kappi.components.MenuBar
 import com.example.kappi.components.TopBar
 import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
+import com.example.kappi.screens.CKANScreen
 import com.example.kappi.screens.CalculateScreen
 import com.example.kappi.screens.DetailScreen
 import com.example.kappi.screens.HomeScreen
 import com.example.kappi.screens.LoginScreen
 import com.example.kappi.screens.Screen
+import com.example.kappi.screens.TelemetryScreen
+import com.example.kappi.screens.TutorialHubScreen
 import com.example.kappi.ui.theme.KappiTheme
 
 class MainActivity : ComponentActivity() {
@@ -54,62 +57,41 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
     val appBars = AppBars()
 
     when (val screen = actualScreen.value) {
-        is HomeScreen -> {
+        is HomeScreen ->
             screen.Renderer(
                 { actualScreen.value = LoginScreen() },
                 { actualScreen.value = DetailScreen(R.string.DetailScreen) },
-                { actualScreen.value = CalculateScreen()})
-            appBars.AppBarsRender(
-                actualUser,
-                actualScreen.value,
-                topBar,
-                menuBar,
-                appState,
-                { actualScreen.value = LoginScreen() },
-                { actualScreen.value = HomeScreen() },
-                { actualScreen.value = DetailScreen(R.string.DetailScreen) },
-                { actualScreen.value = CalculateScreen() })
-        }
-        is LoginScreen -> {
+                { actualScreen.value = CalculateScreen()},
+                { actualScreen.value = TelemetryScreen() },
+                { actualScreen.value = TutorialHubScreen() },
+                { actualScreen.value = CKANScreen() })
+        is LoginScreen ->
             screen.Renderer(actualUser)
-            appBars.AppBarsRender(
-                actualUser,
-                actualScreen.value,
-                topBar,
-                menuBar,
-                appState,
-                { actualScreen.value = LoginScreen() },
-                { actualScreen.value = HomeScreen() },
-                { actualScreen.value = DetailScreen(R.string.DetailScreen) },
-                { actualScreen.value = CalculateScreen() })
-        }
         is DetailScreen -> {
-            appBars.AppBarsRender(
-                actualUser,
-                actualScreen.value,
-                topBar,
-                menuBar,
-                appState,
-                {actualScreen.value = LoginScreen()},
-                {actualScreen.value = HomeScreen()},
-                {actualScreen.value = DetailScreen(R.string.DetailScreen)},
-                {actualScreen.value = CalculateScreen()})
         }
-        is CalculateScreen -> {
+        is CalculateScreen ->
             screen.CalculatorRenderer()
-            appBars.AppBarsRender(
-                actualUser,
-                actualScreen.value,
-                topBar,
-                menuBar,
-                appState,
-                { actualScreen.value = LoginScreen() },
-                { actualScreen.value = HomeScreen() },
-                { actualScreen.value = DetailScreen(R.string.DetailScreen) },
-                { actualScreen.value = CalculateScreen() })
-        }
+        is TelemetryScreen ->
+            screen.TelemetryRenderer()
+        is TutorialHubScreen ->
+            screen.TutorialHubRenderer()
+        is CKANScreen ->
+            screen.CKANRenderer()
         else -> Unit
     }
+    appBars.AppBarsRender(
+        actualUser,
+        actualScreen.value,
+        topBar,
+        menuBar,
+        appState,
+        { actualScreen.value = LoginScreen() },
+        { actualScreen.value = HomeScreen() },
+        { actualScreen.value = DetailScreen(R.string.DetailScreen) },
+        { actualScreen.value = CalculateScreen() },
+        { actualScreen.value = TelemetryScreen() },
+        { actualScreen.value = TutorialHubScreen() },
+        { actualScreen.value = CKANScreen() })
 }
 
 @Preview(showBackground = true)
