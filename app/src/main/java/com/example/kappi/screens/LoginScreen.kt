@@ -50,7 +50,12 @@ import com.example.kappi.ui.theme.PixelifyFontFamily
 
 class LoginScreen: Screen(R.string.LoginScreen) {
     @Composable
-    public fun Renderer(user: User, state: StateEnum, LoginScreen: () -> Unit, homeScreen: () -> Unit, detailScreen: () -> Unit, calculatorScreen: () -> Unit){
+    public fun Renderer(
+        user: User,
+        state: StateEnum,
+        onNavigate: (Screen) -> Unit,
+        LoginScreen: () -> Unit
+    ){
         val topBar = TopBar()
         val menuBar = MenuBar()
 
@@ -58,7 +63,9 @@ class LoginScreen: Screen(R.string.LoginScreen) {
         Column()
         {
             topBar.TopBarRenderer(user, this@LoginScreen, state, LoginScreen)
-            menuBar.MenuBarRenderer(homeScreen, detailScreen, calculatorScreen)
+            menuBar.MenuBarRenderer(
+                onNavigate
+            )
         }
     }
 

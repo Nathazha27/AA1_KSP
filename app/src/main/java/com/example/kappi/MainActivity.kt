@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 import com.example.kappi.screens.CalculateScreen
+import com.example.kappi.screens.DashboardScreen
 import com.example.kappi.screens.DetailScreen
 import com.example.kappi.screens.HomeScreen
 import com.example.kappi.screens.LoginScreen
@@ -46,12 +47,42 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
     var appState by remember {mutableStateOf(StateEnum.OFF)}
     var actualUser by remember {mutableStateOf(User(R.drawable.pic, mutableStateOf("Nathazha"), mutableStateOf(""),mutableStateOf("Token")))}
     var actualScreen = remember {mutableStateOf<Screen>(HomeScreen())}
+    val navigate: (Screen) -> Unit = { nextScreen ->
+        actualScreen.value = nextScreen
+    }
 
     when (val screen = actualScreen.value) {
-        is HomeScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
-        is LoginScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
-        is DetailScreen -> screen.Renderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
-        is CalculateScreen -> screen.CalculatorRenderer(actualUser, appState, {actualScreen.value = LoginScreen()}, {actualScreen.value = HomeScreen()}, {actualScreen.value = DetailScreen(R.string.DetailScreen)}, {actualScreen.value = CalculateScreen()})
+        is HomeScreen -> screen.Renderer(
+            actualUser,
+            appState,
+            navigate,
+            {actualScreen.value = LoginScreen()},
+            {actualScreen.value = DetailScreen(R.string.DetailScreen)}
+        )
+        is LoginScreen -> screen.Renderer(
+            actualUser,
+            appState,
+            navigate,
+            {actualScreen.value = LoginScreen()}
+        )
+        is DetailScreen -> screen.Renderer(
+            actualUser,
+            appState,
+            navigate,
+            {actualScreen.value = LoginScreen()}
+            )
+        is CalculateScreen -> screen.CalculatorRenderer(
+            actualUser,
+            appState,
+            navigate,
+            {actualScreen.value = LoginScreen()}
+        )
+        is DashboardScreen -> screen.DashboardRenderer(
+            actualUser,
+            appState,
+            navigate,
+            {actualScreen.value = LoginScreen()}
+        )
         else -> Unit
     }
 }

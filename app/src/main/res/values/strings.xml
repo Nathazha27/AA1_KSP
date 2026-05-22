@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">kappi</string>
     <string name="DetailScreen">DETAIL</string>
+    <string name="DashboardScreen">DASHBOARD</string>
     <string name="HomeScreen">HOME</string>
     <string name="LoginScreen">LOGIN</string>
     <string name="LoginText1">Get your personal token to access in realtime telemetry</string>
