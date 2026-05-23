@@ -101,17 +101,6 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                 }
             }
 
-            Column {
-                topBar.TopBarRenderer(
-                    user,
-                    this@DashboardScreen,
-                    state,
-                    LoginScreen
-                )
-                menuBar.MenuBarRenderer(
-                    onNavigate
-                )
-            }
         if (!isConnected) {
             Box(
                 modifier = Modifier
@@ -138,6 +127,18 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                 }
             }
         }
+
+            Column {
+                topBar.TopBarRenderer(
+                    user,
+                    this@DashboardScreen,
+                    state,
+                    LoginScreen
+                )
+                menuBar.MenuBarRenderer(
+                    onNavigate
+                )
+            }
     }
 
     @Composable
