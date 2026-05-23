@@ -36,7 +36,11 @@ class MenuBar {
         onNavigate: (Screen) -> Unit
     ) { //Renderer del menú lateral
         Box(
-            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(Color(0xFF24222D)).width(52.dp).padding(vertical = 20.dp),
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color(0xFF24222D))
+                .width(52.dp)
+                .padding(vertical = 20.dp),
             contentAlignment = Alignment.Center
         ){
           Column(
