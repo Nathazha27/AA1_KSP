@@ -67,6 +67,7 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
     var appState by remember {mutableStateOf(StateEnum.OFF)}
     var actualUser by remember {mutableStateOf(User(R.drawable.pic, mutableStateOf("192.168.0.0"), mutableStateOf("27415"),mutableStateOf("Token")))}
     var actualScreen = remember {mutableStateOf<Screen>(HomeScreen())}
+    var isMenuOpen by remember {mutableStateOf(false)}
     val navigate: (Screen) -> Unit = { nextScreen ->
         actualScreen.value = nextScreen
     }
@@ -78,7 +79,9 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
             navigate,
             {actualScreen.value = LoginScreen()},
             {actualScreen.value = DetailScreen(R.string.DetailScreen)},
-            topBarViewModel
+            topBarViewModel,
+            isMenuOpen,
+            {value -> isMenuOpen = value}
         )
         is LoginScreen -> screen.Renderer(
             actualUser,
@@ -86,21 +89,27 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
             navigate,
             {actualScreen.value = LoginScreen()},
             telemetryViewModel,
-            topBarViewModel
+            topBarViewModel,
+            isMenuOpen,
+            {value -> isMenuOpen = value}
         )
         is DetailScreen -> screen.Renderer(
             actualUser,
             appState,
             navigate,
             {actualScreen.value = LoginScreen()},
-            topBarViewModel
-            )
+            topBarViewModel,
+            isMenuOpen,
+            {value -> isMenuOpen = value}
+        )
         is CalculateScreen -> screen.CalculatorRenderer(
             actualUser,
             appState,
             navigate,
             {actualScreen.value = LoginScreen()},
-            topBarViewModel
+            topBarViewModel,
+            isMenuOpen,
+            {value -> isMenuOpen = value}
         )
         is DashboardScreen -> screen.DashboardRenderer(
             actualUser,
@@ -108,7 +117,9 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
             navigate,
             {actualScreen.value = LoginScreen()},
             telemetryViewModel,
-            topBarViewModel
+            topBarViewModel,
+            isMenuOpen,
+            {value -> isMenuOpen = value}
         )
         else -> Unit
     }

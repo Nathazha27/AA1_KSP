@@ -44,10 +44,16 @@ class TopBar {
                 )
                 .drawBehind {
                     drawLine(
+                        color = Color(0xFFEA00FF).copy(alpha = 0.4f),
+                        start = Offset(0f, size.height - 2f),
+                        end = Offset(size.width, size.height - 2f),
+                        strokeWidth = 10.0f
+                    )
+                    drawLine(
                         color = Color(0xFF90709D),
-                        start = Offset(0f, size.height - 2),
-                        end = Offset(size.width, size.height - 2),
-                        strokeWidth = 4.0f
+                        start = Offset(0f, size.height - 4f),
+                        end = Offset(size.width, size.height - 4f),
+                        strokeWidth = 8.0f
                     )
                 },
             title = {

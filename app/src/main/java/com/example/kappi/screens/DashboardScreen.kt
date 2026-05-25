@@ -80,7 +80,9 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
         onNavigate: (Screen) -> Unit,
         LoginScreen: () -> Unit,
         viewModel : DashboardViewModel,
-        topBarViewModel: TopBarViewModel
+        topBarViewModel: TopBarViewModel,
+        isMenuOpen: Boolean,
+        onMenuOpenChange: (Boolean) -> Unit,
     ) {
         val isConnected by viewModel.isConnected.collectAsState()
         val telemetry by viewModel.telemetry.collectAsState()
@@ -162,9 +164,7 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                     LoginScreen,
                     topBarViewModel
                 )
-                menuBar.MenuBarRenderer(
-                    onNavigate
-                )
+                menuBar.MenuBarRenderer(isMenuOpen, onMenuOpenChange, onNavigate)
             }
     }
 

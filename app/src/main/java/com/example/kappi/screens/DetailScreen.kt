@@ -20,7 +20,9 @@ open class DetailScreen(detailName:Int): Screen(detailName) {
         state: StateEnum,
         onNavigate: (Screen) -> Unit,
         LoginScreen: () -> Unit,
-        topBarViewModel: TopBarViewModel
+        topBarViewModel: TopBarViewModel,
+        isMenuOpen: Boolean,
+        onMenuOpenChange: (Boolean) -> Unit
     ){
         val topBar = TopBar()
         val menuBar = MenuBar()
@@ -32,9 +34,7 @@ open class DetailScreen(detailName:Int): Screen(detailName) {
                 LoginScreen,
                 topBarViewModel
             )
-            menuBar.MenuBarRenderer(
-                onNavigate
-            )
+            menuBar.MenuBarRenderer(isMenuOpen, onMenuOpenChange, onNavigate)
         }
     }
 }

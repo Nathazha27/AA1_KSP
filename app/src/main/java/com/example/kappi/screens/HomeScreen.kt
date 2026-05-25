@@ -66,7 +66,9 @@ class HomeScreen: Screen(R.string.HomeScreen) {
         onNavigate: (Screen) -> Unit,
         LoginScreen: () -> Unit,
         detailScreen: () -> Unit,
-        topBarViewModel: TopBarViewModel
+        topBarViewModel: TopBarViewModel,
+        isMenuOpen: Boolean,
+        onMenuOpenChange: (Boolean) -> Unit
         ){
         val topBar = TopBar()
         val menuBar = MenuBar()
@@ -79,7 +81,7 @@ class HomeScreen: Screen(R.string.HomeScreen) {
         Column()
         {
             topBar.TopBarRenderer(user, this@HomeScreen, state, LoginScreen, topBarViewModel)
-            menuBar.MenuBarRenderer(onNavigate)
+            menuBar.MenuBarRenderer(isMenuOpen, onMenuOpenChange, onNavigate)
         }
     }
 

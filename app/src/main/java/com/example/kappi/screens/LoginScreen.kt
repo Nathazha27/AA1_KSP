@@ -58,7 +58,9 @@ class LoginScreen : Screen(R.string.LoginScreen) {
         onNavigate: (Screen) -> Unit,
         LoginAction: () -> Unit,
         viewModel: DashboardViewModel,
-        topBarViewModel: TopBarViewModel
+        topBarViewModel: TopBarViewModel,
+        isMenuOpen: Boolean,
+        onMenuOpenChange: (Boolean) -> Unit
     ) {
         val topBar = TopBar()
         val menuBar = MenuBar()
@@ -67,7 +69,7 @@ class LoginScreen : Screen(R.string.LoginScreen) {
 
         Column {
             topBar.TopBarRenderer(user, this@LoginScreen, state, LoginAction, topBarViewModel)
-            menuBar.MenuBarRenderer(onNavigate)
+            menuBar.MenuBarRenderer(isMenuOpen, onMenuOpenChange, onNavigate)
         }
     }
 
