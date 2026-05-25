@@ -43,6 +43,8 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kappi.R
 import com.example.kappi.classes.HomeDetailLoader
 import com.example.kappi.components.HomeDetailComp
@@ -54,6 +56,7 @@ import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 import com.example.kappi.ui.theme.LatoFontFamily
 import com.example.kappi.ui.theme.PixelifyFontFamily
+import com.example.kappi.viewmodels.TopBarViewModel
 
 class HomeScreen: Screen(R.string.HomeScreen) {
     @Composable
@@ -62,7 +65,8 @@ class HomeScreen: Screen(R.string.HomeScreen) {
         state: StateEnum,
         onNavigate: (Screen) -> Unit,
         LoginScreen: () -> Unit,
-        detailScreen: () -> Unit
+        detailScreen: () -> Unit,
+        topBarViewModel: TopBarViewModel
         ){
         val topBar = TopBar()
         val menuBar = MenuBar()
@@ -74,7 +78,7 @@ class HomeScreen: Screen(R.string.HomeScreen) {
         )
         Column()
         {
-            topBar.TopBarRenderer(user, this@HomeScreen, state, LoginScreen)
+            topBar.TopBarRenderer(user, this@HomeScreen, state, LoginScreen, topBarViewModel)
             menuBar.MenuBarRenderer(onNavigate)
         }
     }
@@ -135,7 +139,7 @@ class HomeScreen: Screen(R.string.HomeScreen) {
                             shape = cornerShape
                         )
                         .padding(0.dp)
-                        .border( width = 1.dp, shape = cornerShape, color = Color(0xFFA6A29A))
+                        .border(width = 1.dp, shape = cornerShape, color = Color(0xFFA6A29A))
                 ) {
                     Text(
                         text = stringResource(R.string.HomeLogin),

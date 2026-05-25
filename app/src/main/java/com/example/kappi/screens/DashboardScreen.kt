@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,10 +18,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -29,23 +34,41 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.Path
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kappi.R
+import com.example.kappi.components.BatteryIndicator
 import com.example.kappi.components.MenuBar
 import com.example.kappi.components.TopBar
+import com.example.kappi.components.VerticalAltimeterRenderer
+import com.example.kappi.components.VerticalProgressBarRenderer
 import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 import com.example.kappi.ui.theme.PixelifyFontFamily
 import com.example.kappi.viewmodels.DashboardViewModel
+import com.example.kappi.viewmodels.TopBarViewModel
 import org.example.proto.KspTelemetry
 import org.example.proto.kspTelemetry
 
@@ -55,9 +78,10 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
         user: User,
         state: StateEnum,
         onNavigate: (Screen) -> Unit,
-        LoginScreen: () -> Unit
+        LoginScreen: () -> Unit,
+        viewModel : DashboardViewModel,
+        topBarViewModel: TopBarViewModel
     ) {
-        val viewModel: DashboardViewModel = viewModel()
         val isConnected by viewModel.isConnected.collectAsState()
         val telemetry by viewModel.telemetry.collectAsState()
 
@@ -83,7 +107,8 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                     LeftLayout(
                         modifier = Modifier
                             .weight(0.125f)
-                            .fillMaxHeight()
+                            .fillMaxHeight(),
+                        telemetry
                     )
 
                     CenterLayout(
@@ -96,7 +121,8 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                     RightLayout(
                         modifier = Modifier
                             .weight(0.125f)
-                            .fillMaxHeight()
+                            .fillMaxHeight(),
+                        telemetry
                     )
                 }
             }
@@ -133,7 +159,8 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                     user,
                     this@DashboardScreen,
                     state,
-                    LoginScreen
+                    LoginScreen,
+                    topBarViewModel
                 )
                 menuBar.MenuBarRenderer(
                     onNavigate
@@ -155,18 +182,37 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
     }
 
     @Composable
-    fun LeftLayout(modifier: Modifier) {
+    fun LeftLayout(modifier: Modifier, telemetry: KspTelemetry) {
+        val cornerShape = RoundedCornerShape(10.dp)
+        val backgroundColor = Color(0xFF1E1C24)
+        val borderColor = Color(0xFF90709D)
+        val neonColor = Color(0xFFEA00FF)
         Column(
-            modifier = modifier.background(Color.Red)
+            modifier = modifier.background(Color(0xFF352e43))
         ) {
             Row(
                 modifier = Modifier
                     .weight(0.75f)
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp, vertical = 5.dp)
-                    .background(Color.Yellow)
             ) {
-
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    var altitudeProgress : Float = (telemetry.altSeaLevel / 70000).toFloat().coerceIn(0f, 1f)
+                    VerticalAltimeterRenderer(
+                        progress = altitudeProgress,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(
+                                vertical = 0.dp,
+                                horizontal = 0.dp
+                            )
+                    )
+                }
             }
 
             Row(
@@ -174,9 +220,16 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                     .weight(0.25f)
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp, vertical = 5.dp)
-                    .background(Color.Cyan)
             ) {
-
+                KappiDashboardBox(Modifier.weight(0.5f),neonColor,cornerShape,backgroundColor,borderColor) {
+                    Text(
+                        text = String.format("%02d", telemetry.currentStage % 100),
+                        color = Color.White,
+                        fontFamily = PixelifyFontFamily,
+                        fontSize = 27.sp,
+                        textAlign = TextAlign.Center
+                        )
+                }
             }
         }
     }
@@ -188,13 +241,14 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
         ) {
             TopCenterLayout(
                 modifier = Modifier
-                    .weight(.3f)
-                    .fillMaxSize()
+                    .weight(.2f)
+                    .fillMaxSize(),
+                telemetry
             )
 
             MainCenterLayout(
                 modifier = Modifier
-                    .weight(.7f)
+                    .weight(.8f)
                     .fillMaxSize(),
                 telemetry
             )
@@ -202,13 +256,237 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
     }
 
     @Composable
-    fun TopCenterLayout(modifier: Modifier){
+    fun TopCenterLayout(modifier: Modifier, telemetry: KspTelemetry){
         Row(
             modifier = modifier
                 .padding(horizontal = 10.dp, vertical = 0.dp)
-                .background(Color.Magenta)
         ){
+            Box(
+                Modifier
+                    .weight(.225f)
+                    .fillMaxSize()
+            ){
+                val gradientBrush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF52ff4a),
+                        Color(0xFF24ff62)
+                    ),
+                    start = Offset(0f,0f),
+                    end = Offset.Infinite
+                )
+                StatusBox(
+                    modifier = modifier,
+                    state = telemetry.rcs,
+                    neonColor = Color(0xFF45FF19),
+                    backgroundColor = Color(0xFF45FF19),
+                    borderColor = Color(0xFF608d43),
+                    displayText = "RCS",
+                    brush = gradientBrush
+                )
 
+            }
+            Box(
+                Modifier
+                    .weight(.55f)
+                    .fillMaxSize()
+            ){
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .weight(0.2f)
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+
+                            Box(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .background(
+                                        color = if (telemetry.comLink) Color.Green else Color.Red,
+                                        shape = CircleShape
+                                    )
+                                    .border(
+                                        width = 2.dp,
+                                        color = Color(0xFF90709D),
+                                        shape = CircleShape
+                                    )
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .weight(0.33f)
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            val gradientBrush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFF8856d3),
+                                    Color(0xFF9045ff)
+                                ),
+                                start = Offset(0f, 0f),
+                                end = Offset.Infinite
+                            )
+                            StatusBox(
+                                modifier = Modifier,
+                                state = telemetry.lights,
+                                neonColor = Color(0xFFb889ff),
+                                backgroundColor = Color(0xFF9d5cff),
+                                brush = gradientBrush,
+                                borderColor = Color(0xFF4d2b80),
+                                displayText = "Status 1",
+                                displayIcon = ImageVector.vectorResource(id = R.drawable.lightsicon)
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .weight(0.33f)
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            val gradientBrush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFF5adab4),
+                                    Color(0xFF32f7bd)
+                                ),
+                                start = Offset(0f, 0f),
+                                end = Offset.Infinite
+                            )
+                            StatusBox(
+                                modifier = Modifier,
+                                state = telemetry.landingGear,
+                                neonColor = Color(0xFF74ffd6),
+                                backgroundColor = Color(0xFF4fffcb),
+                                brush = gradientBrush,
+                                borderColor = Color(0xFF208a6b),
+                                displayText = "Status 2",
+                                displayIcon = ImageVector.vectorResource(id = R.drawable.gearicon)
+                            )
+                        }
+
+
+                        Column(
+                            modifier = Modifier
+                                .weight(0.33f)
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            val gradientBrush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFe19b69),
+                                    Color(0xFFff9242)
+                                ),
+                                start = Offset(0f, 0f),
+                                end = Offset.Infinite
+                            )
+                            StatusBox(
+                                modifier = Modifier,
+                                state = telemetry.brakes,
+                                neonColor = Color(0xFFffb47e),
+                                backgroundColor = Color(0xFFffa868),
+                                brush = gradientBrush,
+                                borderColor = Color(0xFFa6571e),
+                                displayText = "Status 3",
+                                displayIcon = ImageVector.vectorResource(id = R.drawable.brakesicon)
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .weight(0.2f)
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .background(
+                                        color = if (telemetry.grounded) Color.Green else Color.Cyan,
+                                        shape = CircleShape
+                                    )
+                                    .border(
+                                        width = 2.dp,
+                                        color = Color(0xFF90709D),
+                                        shape = CircleShape
+                                    )
+                            )
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
+                    }
+                }
+            }
+            Box(
+                Modifier
+                    .weight(.225f)
+                    .fillMaxSize()
+            ){
+                val gradientBrush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF95ffff),
+                        Color(0xFF6effff)
+                    ),
+                    start = Offset(0f,0f),
+                    end = Offset.Infinite
+                )
+                StatusBox(
+                    modifier = modifier,
+                    state = telemetry.sas,
+                    neonColor = Color(0xFF98f9ff),
+                    backgroundColor = Color(0xFF85d3ff),
+                    borderColor = Color(0xFF5199c2),
+                    displayText = "SAS",
+                    brush = gradientBrush
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun StatusBox(modifier : Modifier, state : Boolean, neonColor: Color, backgroundColor : Color, brush : Brush, borderColor: Color, displayText : String, displayIcon : ImageVector ? = null){
+        val calculatedCornerShape = RoundedCornerShape(10.dp)
+        val calculatedBackgroundColor = if(state) backgroundColor else Color(0xFF1E1C24)
+        val calculatedBorderColor = if(state) borderColor else Color(0xFF90709D)
+        val calculatedNeonColor = if(state) neonColor else Color(0xFFEA00FF)
+        val calculatedGradientBrush = if(state) brush else null
+        KappiDashboardBox(modifier,calculatedNeonColor,calculatedCornerShape,calculatedBackgroundColor,calculatedBorderColor, calculatedGradientBrush) {
+            if(displayIcon == null){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = displayText,
+                    color = if(state) Color.White else Color.Gray,
+                    fontFamily = PixelifyFontFamily,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center
+                )
+            }else{
+                Icon(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(23.dp),
+                    imageVector = displayIcon,
+                    contentDescription = null,
+                    tint = if (state) Color.White else Color.Gray,
+                )
+            }
         }
     }
 
@@ -218,7 +496,6 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
         val backgroundColor = Color(0xFF1E1C24)
         val borderColor = Color(0xFF90709D)
         val neonColor = Color(0xFFEA00FF)
-
 
             Column(
                 modifier = modifier.padding(10.dp)
@@ -279,6 +556,7 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
         shape: RoundedCornerShape,
         bg: Color,
         border: Color,
+        brush: Brush? = null,
         content: @Composable () -> Unit
     ) {
         Box(
@@ -293,7 +571,13 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                 )
                 .clip(shape)
                 .border(2.dp, border, shape)
-                .background(bg)
+                .then(
+                    if (brush != null) {
+                        Modifier.background(brush)
+                    } else {
+                        Modifier.background(bg)
+                    }
+                )
                 .padding(
                     horizontal = 15.dp,
                     vertical = 2.dp
@@ -302,10 +586,9 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
             contentAlignment = Alignment.CenterStart
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+               modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(0.dp)
-            ){
-
+            ) {
                 content()
             }
         }
@@ -349,45 +632,56 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
         }
     }
     @Composable
-    fun RightLayout(modifier: Modifier) {
+    fun RightLayout(modifier: Modifier, telemetry: KspTelemetry) {
         Column(
-            modifier = modifier.background(Color.Blue)
+            modifier = modifier.background(Color(0xFF352e43))
         ) {
             Row(
                 modifier = Modifier
                     .weight(0.75f)
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
-                    .background(Color.Yellow)
+                    .padding(horizontal = 10.dp, vertical = 0.dp)
             ) {
                 Column (
                     modifier = Modifier
                         .weight(.33f)
                         .fillMaxHeight()
-                        .padding(horizontal = 2.dp, vertical = 5.dp)
-                        .background(Color.Green)
+                        .padding(horizontal = 2.dp, vertical = 0.dp)
                         ){
-
+                        VerticalProgressBarRenderer(
+                            progress = telemetry.liquidFuel,
+                            modifier = Modifier.fillMaxSize(),
+                            color = Color(0xFF4c2223),
+                            trackColor = Color(0xFFe6510f)
+                        )
                 }
 
                 Column (
                     modifier = Modifier
                         .weight(.33f)
                         .fillMaxHeight()
-                        .padding(horizontal = 2.dp, vertical = 5.dp)
-                        .background(Color.Magenta)
+                        .padding(horizontal = 2.dp, vertical = 0.dp)
                 ){
-
+                    VerticalProgressBarRenderer(
+                        progress = telemetry.oxidizer,
+                        modifier = Modifier.fillMaxSize(),
+                        color = Color(0xFF25435d),
+                        trackColor = Color(0xFF08b0df)
+                    )
                 }
 
                 Column (
                     modifier = Modifier
                         .weight(.33f)
                         .fillMaxHeight()
-                        .padding(horizontal = 2.dp, vertical = 5.dp)
-                        .background(Color.Cyan)
+                        .padding(horizontal = 2.dp, vertical = 0.dp)
                 ){
-
+                    VerticalProgressBarRenderer(
+                        progress = telemetry.monoprop,
+                        modifier = Modifier.fillMaxSize(),
+                        color = Color(0xFF615b62),
+                        trackColor = Color(0xFFfffbda)
+                    )
                 }
 
 
@@ -397,10 +691,13 @@ class DashboardScreen : Screen(R.string.DashboardScreen) {
                 modifier = Modifier
                     .weight(0.25f)
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
-                    .background(Color.Magenta)
+                    .padding(horizontal = 0.dp, vertical = 0.dp)
             ) {
-
+                BatteryIndicator(
+                    progress = telemetry.electricCharge,
+                    modifier = Modifier.rotate(90f),
+                    activeColor = Color.Green
+                )
             }
         }
 

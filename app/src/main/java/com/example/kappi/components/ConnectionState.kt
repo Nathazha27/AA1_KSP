@@ -11,38 +11,46 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import com.example.kappi.R
 import com.example.kappi.models.StateEnum
 
 class ConnectionState {
     @Composable
-    public fun ConnectionStateRenderer(state: StateEnum){
+    fun ConnectionStateRenderer(state: StateEnum) {
         Column(
             modifier = Modifier.padding(10.dp)
-        ){
-            Image(
-                painter =  painterResource(
-                    if (state != StateEnum.ON) R.drawable.ph_offgreen
-                    else R.drawable.ph_ongreen),
-                contentDescription = null,
-                modifier = Modifier.size(10.dp).clip(CircleShape)
-            )
-            Spacer(modifier = Modifier.padding(2.dp))
+        ) {
             Image(
                 painter = painterResource(
-                    if (state != StateEnum.CONNECTING) R.drawable.ph_offyellow
-                    else R.drawable.ph_onyellow),
+                    if (state == StateEnum.ON) R.drawable.ph_ongreen else R.drawable.ph_offgreen
+                ),
                 contentDescription = null,
-                modifier = Modifier.size(10.dp).clip(CircleShape)
+                modifier = Modifier.size(10.dp).clip(CircleShape),
+                colorFilter = if (state == StateEnum.ON) null else ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
             )
-            Spacer(modifier = Modifier.padding(2.dp))
+
+            Spacer(modifier = Modifier.size(4.dp))
 
             Image(
                 painter = painterResource(
-                    if (state != StateEnum.OFF) R.drawable.ph_offred
-                    else R.drawable.ph_onred),
+                    if (state == StateEnum.CONNECTING) R.drawable.ph_onyellow else R.drawable.ph_offyellow
+                ),
                 contentDescription = null,
-                modifier = Modifier.size(10.dp).clip(CircleShape)
+                modifier = Modifier.size(10.dp).clip(CircleShape),
+                colorFilter = if (state == StateEnum.CONNECTING) null else ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
+            )
+
+            Spacer(modifier = Modifier.size(4.dp))
+
+            Image(
+                painter = painterResource(
+                    if (state == StateEnum.OFF) R.drawable.ph_onred else R.drawable.ph_offred
+                ),
+                contentDescription = null,
+                modifier = Modifier.size(10.dp).clip(CircleShape),
+                colorFilter = if (state == StateEnum.OFF) null else ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
             )
         }
     }

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kappi.R
 import com.example.kappi.components.MenuBar
 import com.example.kappi.components.NeonDivider
@@ -40,6 +41,8 @@ import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 import com.example.kappi.ui.theme.LatoFontFamily
 import com.example.kappi.ui.theme.PixelifyFontFamily
+import com.example.kappi.viewmodels.DashboardViewModel
+import com.example.kappi.viewmodels.TopBarViewModel
 
 class CalculateScreen : DetailScreen(R.string.CalculatorScreen) {
     @Composable
@@ -47,7 +50,8 @@ class CalculateScreen : DetailScreen(R.string.CalculatorScreen) {
         user: User,
         state: StateEnum,
         onNavigate: (Screen) -> Unit,
-        LoginScreen: () -> Unit
+        LoginScreen: () -> Unit,
+        topBarViewModel: TopBarViewModel
     ){
         val topBar = TopBar()
         val menuBar = MenuBar()
@@ -57,7 +61,8 @@ class CalculateScreen : DetailScreen(R.string.CalculatorScreen) {
             topBar.TopBarRenderer(user,
                 this@CalculateScreen,
                 state,
-                LoginScreen
+                LoginScreen,
+                topBarViewModel
             )
             menuBar.MenuBarRenderer(
                 onNavigate
@@ -108,7 +113,10 @@ class CalculateScreen : DetailScreen(R.string.CalculatorScreen) {
             value = valueDef.value,
             shape = RoundedCornerShape(12.dp),
             onValueChange = { valueDef.value = it },
-            modifier = Modifier.width(250.dp).height(50.dp).background(Color(0xFFE0E0E0), RoundedCornerShape(12.dp)),
+            modifier = Modifier
+                .width(250.dp)
+                .height(50.dp)
+                .background(Color(0xFFE0E0E0), RoundedCornerShape(12.dp)),
             textStyle = TextStyle(
                 fontFamily = PixelifyFontFamily,
                 fontSize = 20.sp,

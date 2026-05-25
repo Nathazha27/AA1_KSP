@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -19,30 +21,35 @@ import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 import com.example.kappi.screens.Screen
 import com.example.kappi.ui.theme.LatoFontFamily
+import com.example.kappi.viewmodels.TopBarViewModel
 
 class TopBar {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    public fun TopBarRenderer(user: User, screen: Screen, state: StateEnum, LoginScreen: () -> Unit){
+    public fun TopBarRenderer(user: User, screen: Screen, state: StateEnum, LoginScreen: () -> Unit, viewModel : TopBarViewModel){
         val userProfile = UserPic()
         val appState = ConnectionState()
+        val isConnected by viewModel.isConnected.collectAsState()
+
         TopAppBar(
             colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Color.Transparent,
             titleContentColor = Color.White
             ),
-            modifier = Modifier.background(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF514C70), Color(0xFF3D2C45))
+            modifier = Modifier
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(Color(0xFF514C70), Color(0xFF3D2C45))
+                    )
                 )
-            ).drawBehind {
-                drawLine(
-                    color =  Color(0xFF90709D),
-                    start = Offset(0f, size.height - 2),
-                    end = Offset(size.width, size.height - 2),
-                    strokeWidth = 4.0f
-                )
-            },
+                .drawBehind {
+                    drawLine(
+                        color = Color(0xFF90709D),
+                        start = Offset(0f, size.height - 2),
+                        end = Offset(size.width, size.height - 2),
+                        strokeWidth = 4.0f
+                    )
+                },
             title = {
                 Text(
                     text = stringResource(id = screen.screenName),
@@ -57,6 +64,7 @@ class TopBar {
                 userProfile.UserPicRenderer(user, LoginScreen)
             },
             actions = {
+                val state = if(isConnected) StateEnum.ON else StateEnum.OFF
                 appState.ConnectionStateRenderer(state)
             }
         )

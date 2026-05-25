@@ -43,7 +43,7 @@ class HomeDetailComp {
                 )
                 .clip(RoundedCornerShape(20.dp))
                 .border(2.dp, Color(0xFF90709D), RoundedCornerShape(20.dp))
-                .clickable { homeDetail.onClick() }
+                .clickable { homeDetail.onClick?.invoke() }
                 .background(Color(0xFF1E1C24))
                 .padding(20.dp, 10.dp)
                 .width(300.dp),
@@ -54,6 +54,7 @@ class HomeDetailComp {
                     text = stringResource(homeDetail.title),
                     textAlign = TextAlign.Left,
                     fontFamily = LatoFontFamily,
+                    lineHeight = 33.sp,
                     fontWeight = FontWeight.Bold,
                     fontSize = 32.sp,
                     color = Color(0xFFEDEDED)

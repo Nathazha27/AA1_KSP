@@ -15,6 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kappi.data.TelemetryRepo
 import com.example.kappi.models.StateEnum
 import com.example.kappi.models.User
 import com.example.kappi.screens.CalculateScreen
@@ -24,13 +27,22 @@ import com.example.kappi.screens.HomeScreen
 import com.example.kappi.screens.LoginScreen
 import com.example.kappi.screens.Screen
 import com.example.kappi.ui.theme.KappiTheme
+import com.example.kappi.viewmodels.DashboardViewModel
+import com.example.kappi.viewmodels.TopBarViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.statusBarColor = android.graphics.Color.parseColor("#26222e")
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            isAppearanceLightStatusBars = true
+        }
+
+        TelemetryRepo.startConnection()
+
         setContent {
             KappiTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Color(0xFF26222E)
@@ -40,12 +52,20 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        TelemetryRepo.stopConnection()
+    }
 }
 
 @Composable
 fun KappiApp(name: String, modifier: Modifier = Modifier) {
+    val telemetryViewModel : DashboardViewModel = viewModel()
+    val topBarViewModel : TopBarViewModel = viewModel()
+
     var appState by remember {mutableStateOf(StateEnum.OFF)}
-    var actualUser by remember {mutableStateOf(User(R.drawable.pic, mutableStateOf("Nathazha"), mutableStateOf(""),mutableStateOf("Token")))}
+    var actualUser by remember {mutableStateOf(User(R.drawable.pic, mutableStateOf("192.168.0.0"), mutableStateOf("27415"),mutableStateOf("Token")))}
     var actualScreen = remember {mutableStateOf<Screen>(HomeScreen())}
     val navigate: (Screen) -> Unit = { nextScreen ->
         actualScreen.value = nextScreen
@@ -57,31 +77,38 @@ fun KappiApp(name: String, modifier: Modifier = Modifier) {
             appState,
             navigate,
             {actualScreen.value = LoginScreen()},
-            {actualScreen.value = DetailScreen(R.string.DetailScreen)}
+            {actualScreen.value = DetailScreen(R.string.DetailScreen)},
+            topBarViewModel
         )
         is LoginScreen -> screen.Renderer(
             actualUser,
             appState,
             navigate,
-            {actualScreen.value = LoginScreen()}
+            {actualScreen.value = LoginScreen()},
+            telemetryViewModel,
+            topBarViewModel
         )
         is DetailScreen -> screen.Renderer(
             actualUser,
             appState,
             navigate,
-            {actualScreen.value = LoginScreen()}
+            {actualScreen.value = LoginScreen()},
+            topBarViewModel
             )
         is CalculateScreen -> screen.CalculatorRenderer(
             actualUser,
             appState,
             navigate,
-            {actualScreen.value = LoginScreen()}
+            {actualScreen.value = LoginScreen()},
+            topBarViewModel
         )
         is DashboardScreen -> screen.DashboardRenderer(
             actualUser,
             appState,
             navigate,
-            {actualScreen.value = LoginScreen()}
+            {actualScreen.value = LoginScreen()},
+            telemetryViewModel,
+            topBarViewModel
         )
         else -> Unit
     }
