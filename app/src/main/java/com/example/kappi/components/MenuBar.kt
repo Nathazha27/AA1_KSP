@@ -203,13 +203,27 @@ class MenuBar {
 
             IconButton(
                 onClick = {onMenuOpenChange(!isMenuOpen)},
-                modifier = Modifier.align(Alignment.BottomEnd).offset(buttonXOffset.value, -20.dp
+                modifier = Modifier.align(Alignment.BottomEnd).offset(
+                    buttonXOffset.value, -20.dp
                 )
+                    .clip(CircleShape)
+                    .shadow(
+                        6.dp,
+                        CircleShape,
+                        false,
+                        Color(0xFFEA00FF),
+                        Color(0xFFEA00FF)
+                    )
+                    .border(2.dp, Color(0xFF90709D), CircleShape)
+                    .background(Color(0xFF24222D))
             ){
                 Image(
-                    painter = painterResource(R.drawable.ph_onred),
+                    painter = painterResource(if (isMenuOpen)
+                        R.drawable.baseline_keyboard_arrow_left_24 else
+                        R.drawable.baseline_keyboard_arrow_right_24
+                    ),
                     contentDescription = null,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(60.dp)
                 )
             }
         }
