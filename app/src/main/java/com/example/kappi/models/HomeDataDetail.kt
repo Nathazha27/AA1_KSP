@@ -7,3 +7,4 @@ data class HomeDataDetail(
     @StringRes val info: Int,
     val onClick : (() -> Unit)? = null
 )
+
